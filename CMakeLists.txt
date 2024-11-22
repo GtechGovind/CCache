@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Define the project name and its version
-project(CCache VERSION 0.0.1)
+project(CCache VERSION 0.0.4)
 
 # Set the C++ standard for the project. In this case, C++17 is used.
 set(CMAKE_CXX_STANDARD 17)

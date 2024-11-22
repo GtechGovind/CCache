@@ -110,11 +110,10 @@ public:
      * @param compute_func A function to compute the value if not cached.
      * @return The cached or computed value.
      */
-    Value with_cache(const Key &key, const std::function<Value()> &compute_func) {
-        auto cached_value = get(key);
-        if (cached_value) {
+    std::optional<Value> with_cache(const Key &key, const std::function<Value()> &compute_func) {
+        if (auto cached_value = get(key)) {
             log("HIT: " + key_to_string(key));
-            return *cached_value;
+            return cached_value;
         }
         log("MISS: " + key_to_string(key));
         Value computed_value = compute_func();
@@ -122,7 +121,18 @@ public:
         return computed_value;
     }
 
+    /**
+     * @brief Clears all entries from the cache.
+     */
+    void clear() {
+        std::unique_lock lock(mutex_);
+        cache_map_.clear();
+        access_order_.clear();
+        log("CLEAR: All cache entries have been removed.");
+    }
+
 private:
+
     struct CacheEntry {
         Value value;
         std::chrono::steady_clock::time_point timestamp;
