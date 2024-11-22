@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Define the project name and its version
-project(CCache VERSION 0.0.4)
+project(CCache VERSION 0.0.5)
 
 # Set the C++ standard for the project. In this case, C++17 is used.
 set(CMAKE_CXX_STANDARD 17)
@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Define 'CCache' as a shared library (you can use STATIC if needed)
 add_library(CCache SHARED
         src/CCache.h     # Header file
-        src/main.cpp     # Source file with the 'main' function
+        # Source file with the 'main' function
 )
 
 # Optionally export symbols if you're building a shared library
