@@ -2,28 +2,21 @@
 cmake_minimum_required(VERSION 3.22)
 
 # Define the project name and its version
-project(CCache VERSION 0.0.5)
+project(CCache VERSION 0.0.6)
 
-# Set the C++ standard for the project. In this case, C++17 is used.
+# Set the C++ standard for the project
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
-# Define 'CCache' as a shared library (you can use STATIC if needed)
-add_library(CCache SHARED
-        src/CCache.h     # Header file
-        # Source file with the 'main' function
-)
+# Create an interface library for the header-only library
+add_library(CCache INTERFACE)
 
-# Optionally export symbols if you're building a shared library
-set_target_properties(CCache PROPERTIES ENABLE_EXPORTS YES)
+# Specify include directories for the header file
+target_include_directories(CCache INTERFACE "${CMAKE_SOURCE_DIR}/src")
 
-# Include directories for CCache library (PUBLIC makes them available to other projects linking this library)
-target_include_directories(CCache PUBLIC "${CMAKE_SOURCE_DIR}/src")
+# Install rules for the header file (optional, for deployment)
+install(TARGETS CCache EXPORT CCacheTargets)
 
-# If you want to link this library to other projects, use the following (in the other project's CMakeLists.txt)
-# target_link_libraries(OtherProject PRIVATE CCache)
-
-# Optionally, you can specify a directory for the library if needed
-# target_link_directories(OtherProject PRIVATE /path/to/CCache/library)
-
-# If CCache is built in a separate location, you may need to define the CMAKE_PREFIX_PATH
-# set(CMAKE_PREFIX_PATH "/path/to/CCache/lib/cmake")
+install(DIRECTORY src/
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.h")
